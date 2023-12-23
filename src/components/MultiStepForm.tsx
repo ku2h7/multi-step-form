@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
-import { useFormik } from 'formik';
+import { ErrorMessage, useFormik } from 'formik';
 import * as Yup from 'yup';
+
+interface formData {
+  firstname: string,
+  lastname: string,
+  email: string,
+}
 
 const MultiStepForm: React.FC = () => {
   const [step, setStep] = useState<number>(1);
@@ -23,13 +29,13 @@ const MultiStepForm: React.FC = () => {
       lastname: '',
       email: '',
     },
+    onSubmit: (values: formData) => {
+      console.log(values);
+    },
     validationSchema: 
       step === 1 ? validationSchemaStep1 : 
       step === 2 ? validationSchemaStep2 : 
       validationSchemaStep3,
-    onSubmit: (values) => {
-      console.log(values);
-    }
   });
 
   const prevStep = () => setStep((prevStep) => prevStep - 1);
@@ -65,6 +71,9 @@ const MultiStepForm: React.FC = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
+              {formik.touched && formik.touched.firstname && (
+                <ErrorMessage name="firstname" />
+              )}
             </div>
           </div>
         </>
@@ -88,6 +97,7 @@ const MultiStepForm: React.FC = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
+              {/* <ErrorMessage name="lastname" /> */}
             </div>
           </div>
         </>
@@ -112,6 +122,7 @@ const MultiStepForm: React.FC = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
+              {/* <ErrorMessage name="email" /> */}
             </div>
           </div>
         </>
